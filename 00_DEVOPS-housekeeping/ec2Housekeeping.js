@@ -48,13 +48,8 @@ exports.prepareExpiredEc2List = function(ec2TagsArr, list){
 
     axios.request(config)
     .then( resp => {
-      let commitIsoDate = resp.data.commit.commit.committer.date; // returns IsoDate
-      let today = new Date();
-      let commitDate = new Date(commitIsoDate)
-      let diffInTime = today.getTime() - commitDate.getTime();
-      let diffInDay = diffInTime / (1000 * 3600 * 24);
-  
-      if(diffInDay > DAYS){
+      let commitIsoDate = resp.data.commit.commit.committer.date;   
+      if(this.checkExpiredCommit(commitIsoDate)){
         list.push(ec2RsrcId)
       }
       resolve("Success")
@@ -62,6 +57,21 @@ exports.prepareExpiredEc2List = function(ec2TagsArr, list){
     .catch(err => console.log(err))
 
   })
+}
+
+exports.checkExpiredCommit = function(commitIsoDate){
+  const RETENTION_DAYS = 3
+
+  let today = new Date();
+  let commitDate = new Date(commitIsoDate)
+  let diffInTime = today.getTime() - commitDate.getTime();
+  let diffInDay = diffInTime / (1000 * 3600 * 24);
+
+  if(diffInDay > RETENTION_DAYS){
+    return true
+  } else {
+    return false
+  }
 }
 
 /**
@@ -139,7 +149,7 @@ exports.getInstances = function(){
 exports.rmInstance = function(instanceArr){
   return new Promise((resolve, reject) => {
     var params = {
-     InstanceIds: instanceArr
+     InstanceIds: [] //instanceArr
     };
     
     console.log("terminating:"+instanceArr)
