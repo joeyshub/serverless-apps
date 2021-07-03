@@ -1,18 +1,23 @@
 {
-  "name": "00_devops-dailybackup-ebs-volumes",
+  "name": "00_devops-ec2Housekeeping",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "npm"
   ],
-  "author": "Yuming Peng <yuming.peng@bioclinica.com>",
+  "author": "Yuming Peng <yuming123@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.939.0",
     "axios": "^0.21.1",
     "dateformat": "^3.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^9.0.2"
   }
 }

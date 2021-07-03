@@ -11,7 +11,12 @@ The lambda function finds all available EC2 instances under AWS account. The EC2
 
 # How to deploy the code
 We use AWS SAM (serverless enabled Cloudformation) to deploy the lambda function. 
-You can either deploy the code with Jenkinsfile OR run below AWSCLIs.
+You can either deploy the code with 
+
+## Jenkinsfile
+The Jenkinsfile is from an old sample of mine, however, the style is outdated in my view, since now I prefer externalized implementation logics from Jenkinsfile.
+
+## AWSCLIs.
 
 ```
 sam package --profile user001 --output-template-file packaged.yaml --s3-bucket $cloudformation_stack_name}
