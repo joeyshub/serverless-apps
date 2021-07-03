@@ -6,8 +6,9 @@ The lambda function finds all available EC2 instances under AWS account. The EC2
 
 # Future Improvements
 1. Currently the code is hightly coupled with Github URL and APIs. Let's make it more flexible in the future.
-2. AWS SDK _ec2.terminateInstances_ doesn't work on stopped instances, let's address this issue if the API updated or when a workaround is available.
+2. AWS SDK `ec2.terminateInstances` doesn't work on stopped instances, let's address this issue if AWS API is updated or when a workaround is available.
 3. We should use something like webpack to build our code, and upload code from built `dist` directory.
+4. Update project structure to have code in `src` folder per convention.
 
 
 # How to deploy the code
