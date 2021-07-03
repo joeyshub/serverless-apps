@@ -1,23 +1,17 @@
 # Overview
-This repository contains the lambda functions (ie. tasks) that Bioclinica devops team used to manage, maintain and monitor AWS resources. A separate README.md is available for each task in each tasks's directory. Only Nodejs based lambda function is allowed under this repo.
+The purpose of this project is to provide serverless solution for below functions, triggered by scheduled CloudWatch events
 
-# Usage
-Each devop task (eg. a lambda function manages the daily backup of EBS volumes) should be under it's own directory. A separate README.md should be available for each task. DO NOT contaminate the top-level README.md  with devop tasks' information or details.
+## Housekeeping of EC2 instances with code from expired feature branches
+The lambda function finds all available EC2 instances under AWS account. The EC2 instanced are expected to be _tagged_ with _git_repo_ and _git_branch_. It hen connects to Git source server to verify if the commit is older than N days, if yes, terminate the EC2 instance.
 
-# Directory Naming Convention
-The Lambda functions serving the same task/purpose should be grouped in one directory. Please follow below directory naming convention.
+# Future Improvements
+1. Currently the code is hightly coupled with Github URL and APIs. Let's make it more flexible in the future.
+2. AWS SDK _ec2.terminateInstances_ doesn't work on stopped instances, let's address this issue if the API updated or when a workaround is available.
 
-Example: **00_DEVOPS-dailybackup-ebs-volumes**  
-${two digit number}_${TYPES}-${task-name-in-kebab-case}  
 
-${two digit number} - nothing but a task type number for ease of task ordering
-${TYPES} - the task type in captial cases
-${task-name-in-kebab-case} - the task name/purpose in kebab case  
+# How to deploy the code
+We use AWS SAM (serverless enabled Cloudformation) to deploy the lambda function. 
+You can either deploy the code with Jenkinsfile OR run below AWSCLIs.
 
-# CI/CD
-We use Jenkins Declarative Pipeline for the CI/CD works. The steps can be found in _Jenkinsfile_ under the repository root.
-
-Only the lambda function diretories explicitly specified in _Jenkinsfile_ will go through the CI/CD process.
-
-The deployment uses AWS SAM framework, which process the template.yaml and deploy the required resources through AWS CloudFormation.
-sss
+sam package --profile user001 --output-template-file packaged.yaml --s3-bucket $cloudformation_stack_name}
+sam deploy --profile user001 --template-file packaged.yaml --stack-name ${cloudformation_stack_name}

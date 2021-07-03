@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    resources for devops maintainance tasks
+    
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+    Function:
+        Timeout: 30  # in seconds
+
+
+Resources:
+
+    EbsBackupFunction:
+        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+        Properties:
+            Handler:  00_DEVOPS-housekeeping/index.handler
+            Runtime: nodejs12.x
+            FunctionName: 00_DEVOPS-housekeeping
+            Role: arn:aws:iam::455882270426:role/service-role/checkBranch-role-zjxh6fpl
+
+Outputs:
+    EbsBackupFunction:
+      Description: "EBS backup Lambda Function ARN"
+      Value: !GetAtt EbsBackupFunction.Arn
