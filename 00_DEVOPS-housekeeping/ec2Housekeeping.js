@@ -1,6 +1,6 @@
-let AWS = require('aws-sdk');
-let ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
-let axios = require('axios');
+let AWS = require('aws-sdk')
+let ec2 = new AWS.EC2({apiVersion: '2016-11-15'})
+let axios = require('axios')
 
 exports.isNumValid = function(num) {
     if (num > 70) {
@@ -30,9 +30,9 @@ exports.prepareExpiredEc2List = function(ec2TagsArr, list){
   
   return new Promise((resolve, reject) => {
     //prepare variables
-    let repo;
-    let branch;
-    let ec2RsrcId;
+    let repo
+    let branch
+    let ec2RsrcId
     for (let i = 0; i < ec2TagsArr.length; i++) {
       if ("git_branch" === ec2TagsArr[i].Key){
         branch = ec2TagsArr[i].Value
@@ -47,7 +47,7 @@ exports.prepareExpiredEc2List = function(ec2TagsArr, list){
 
     axios.request(config)
     .then( resp => {
-      let commitIsoDate = resp.data.commit.commit.committer.date;   
+      let commitIsoDate = resp.data.commit.commit.committer.date   
       if(this.checkExpiredCommit(commitIsoDate)){
         list.push(ec2RsrcId)
       }
@@ -61,10 +61,10 @@ exports.prepareExpiredEc2List = function(ec2TagsArr, list){
 exports.checkExpiredCommit = function(commitIsoDate){
   const RETENTION_DAYS = 3
 
-  let today = new Date();
+  let today = new Date()
   let commitDate = new Date(commitIsoDate)
-  let diffInTime = today.getTime() - commitDate.getTime();
-  let diffInDay = diffInTime / (1000 * 3600 * 24);
+  let diffInTime = today.getTime() - commitDate.getTime()
+  let diffInDay = diffInTime / (1000 * 3600 * 24)
 
   if(diffInDay > RETENTION_DAYS){
     return true
@@ -95,10 +95,10 @@ exports.getInstancesTags = function(wk_instance_id){
     }
 
     ec2.describeTags(params, function(err, data) {
-      let arr_tags = [];
+      let arr_tags = []
       
       if (err) {
-        console.log(err, err.stack);
+        console.log(err, err.stack)
       } else {
         arr_tags.push(data)
       }
@@ -120,17 +120,17 @@ exports.getInstances = function(){
     let params = {} //filter
   
     ec2.describeInstances(params, function(err, data) {
-      let arr_instances = [];
+      let arr_instances = []
           
       if (err) {
-        console.log(err, err.stack);
+        console.log(err, err.stack)
       } else {
         for (let i = 0; i < data.Reservations.length; i++) {
-          let obj = data.Reservations[i].Instances[0];
-          arr_instances.push(obj.InstanceId);
+          let obj = data.Reservations[i].Instances[0]
+          arr_instances.push(obj.InstanceId)
         }
       }
-      resolve(arr_instances);
+      resolve(arr_instances)
     })
   })
 }
@@ -145,12 +145,12 @@ exports.rmInstance = function(instanceArr){
   return new Promise((resolve, reject) => {
     var params = {
      InstanceIds: instanceArr
-    };
+    }
     
     console.log("terminating:"+instanceArr)
     ec2.terminateInstances(params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
+      if (err) console.log(err, err.stack) // an error occurred
+      else     console.log(data)           // successful response
     })
   })
 }
