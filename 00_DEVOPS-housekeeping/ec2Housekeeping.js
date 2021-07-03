@@ -19,7 +19,6 @@ exports.isNumValid = function(num) {
  *   ec2TagArr - ec2 tag objects that contains repo/branch information for N days
  *   list - an array to be populated with ec2 resource ids
  */
-//function prepareExpiredEc2List(ec2TagsArr, list){
 exports.prepareExpiredEc2List = function(ec2TagsArr, list){
   const DAYS = 3
   let config = {
@@ -83,7 +82,6 @@ exports.checkExpiredCommit = function(commitIsoDate){
  * Returns array of Tag objects:  
  * {"Key":"git_branch","ResourceId":"i-0f2ea5baf8f2e5830","ResourceType":"instance","Value":"webapp-tutorial"}
  */
-//function getInstancesTags(wk_instance_id){
 exports.getInstancesTags = function(wk_instance_id){
   return new Promise((resolve) => {
     //create filter 
@@ -107,7 +105,6 @@ exports.getInstancesTags = function(wk_instance_id){
 
       resolve(arr_tags)
     })
-    //.catch(err => console.log(err))
   })
 }
 
@@ -135,7 +132,6 @@ exports.getInstances = function(){
       }
       resolve(arr_instances);
     })
-    //.catch(err => console.log(err))
   })
 }
 
@@ -145,11 +141,10 @@ exports.getInstances = function(){
  * param: 
  * instanceArr = [ 'i-0758dabc428161045', 'i-0f2ea5baf8f2e5830' ]
  */
-//function rmInstance(instanceArr){
 exports.rmInstance = function(instanceArr){
   return new Promise((resolve, reject) => {
     var params = {
-     InstanceIds: [] //instanceArr
+     InstanceIds: instanceArr
     };
     
     console.log("terminating:"+instanceArr)
@@ -157,6 +152,5 @@ exports.rmInstance = function(instanceArr){
       if (err) console.log(err, err.stack); // an error occurred
       else     console.log(data);           // successful response
     })
-    //.catch(err => console.log(err))
   })
 }
